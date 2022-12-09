@@ -69,9 +69,10 @@ OUTPUT(IF(CountThe = 1, 'Pass', 'Words are counted more than once'), NAMED('Test
 
 Words := DATASET([{1, 'The'}, {2, 'house'}, {3, 'has'}, {4, 'rooms'}, {5, 'zoo'}], Word);
 
-Vectors := SV.GetWordVectors(Model, Words);
+//The Vectors record sequence is independent from the Words sequence, so need to sort 
+Vectors := SORT(SV.GetWordVectors(Model, Words), wordid);
 
-// The last vector word is not present in the model so it should hav an empty vec field
+// The last vector word is not present in the model so it should have an empty vec field
 OUTPUT(IF(Vectors[5].vec = [], 'Pass', 'This word is not present but the vec field is not empty'), NAMED('Test2'));
 
 SimilarSentences := DATASET([ {1, 'The sky is orange'},
