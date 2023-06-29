@@ -232,7 +232,7 @@ EXPORT SGD(SET OF INTEGER4 shape, REAL trainToLoss=.05, UNSIGNED numEpochs=0, UN
               shape[1], shape[2], nTrainRecs, adjLR, negSamp); // C++
         // Distribute the updates by sliceId for rollup.  Compress the updates if needed.
         wUpdatesC := w.compressWeights(wUpdates);
-        wUpdatesDC := DISTRIBUTE(wUpdatesC(COUNT(cweights) > 0), sliceId);
+        wUpdatesDC := DISTRIBUTE(wUpdatesC(LENGTH(cweights) > 0), sliceId);
         wUpdatesD := DISTRIBUTE(wUpdates, sliceId);
         // Now apply the updates on the nodes assigned by sliceId, and then re-replicate to all nodes.
         newWeightsC := rollUpdatesC(inWeights2(sliceId % nNodes = node), wUpdatesDC);
